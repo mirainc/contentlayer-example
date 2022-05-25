@@ -1,9 +1,7 @@
-// pages/index.js
-
-import Head from "next/head";
-import Link from "next/link";
-import { compareDesc, format, parseISO } from "date-fns";
-import { allPosts } from "contentlayer/generated";
+import Head from 'next/head';
+import Link from 'next/link';
+import { compareDesc, format, parseISO } from 'date-fns';
+import { allPosts, Post } from 'contentlayer/generated';
 
 export async function getStaticProps() {
   const posts = allPosts.sort((a, b) => {
@@ -12,31 +10,31 @@ export async function getStaticProps() {
   return { props: { posts } };
 }
 
-function PostCard(post: any) {
+function PostCard(post: Post) {
   return (
-    <div className="mb-6">
-      <time dateTime={post.date} className="block text-sm text-slate-600">
-        {format(parseISO(post.date), "LLLL d, yyyy")}
+    <div>
+      <time dateTime={post.date}>
+        {format(parseISO(post.date), 'LLLL d, yyyy')}
       </time>
-      <h2 className="text-lg">
+      <h2>
         <Link href={post.url}>
-          <a className="text-blue-700 hover:text-blue-900">{post.title}</a>
+          <a>{post.title}</a>
         </Link>
       </h2>
     </div>
   );
 }
 
-export default function Home({ posts }: any) {
+export default function Home({ posts }: { posts: Post[] }) {
   return (
-    <div className="mx-auto max-w-2xl py-16 text-center">
+    <div>
       <Head>
         <title>Contentlayer Blog Example</title>
       </Head>
 
-      <h1 className="mb-8 text-3xl font-bold">Contentlayer Blog Example</h1>
+      <h1>Contentlayer Blog Example</h1>
 
-      {posts.map((post: any, idx: any) => (
+      {posts.map((post, idx) => (
         <PostCard key={idx} {...post} />
       ))}
     </div>
