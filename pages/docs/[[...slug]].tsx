@@ -7,9 +7,11 @@ import { PathSegment } from 'types/PathSegment';
 import { defineStaticProps, toParams } from 'utils/next';
 
 export async function getStaticPaths() {
+  const test = allDocs.map((_) => _.pathSegments);
   const paths = allDocs
     .map((_) => _.pathSegments.map((_: PathSegment) => _.pathName).join('/'))
     .map(toParams);
+
   return {
     paths,
     fallback: false,
@@ -25,14 +27,12 @@ export const getStaticProps = defineStaticProps(async (context) => {
   )!;
   let slugs = params.slug ? ['', ...params.slug] : [];
   let path = '';
-  let breadcrumbs: any = [];
   for (const slug of slugs) {
     path += path == '' ? slug : '/' + slug;
     const title = allDocs.find(
       (_) =>
         _.pathSegments.map((_: PathSegment) => _.pathName).join('/') === path,
     )?.title;
-    breadcrumbs.push({ path: '/docs/' + path, slug, title });
   }
   const tree = buildDocsTree(allDocs);
   const childrenTree = buildDocsTree(
@@ -40,11 +40,10 @@ export const getStaticProps = defineStaticProps(async (context) => {
     doc.pathSegments.map((_: PathSegment) => _.pathName),
   );
 
-  return { props: { doc, tree, breadcrumbs, childrenTree } };
+  return { props: { doc, tree, childrenTree } };
 });
 const DocLayout = (props: { doc: Doc }) => {
   const { doc } = props;
-  console.log(props);
   return (
     <>
       <Head>
