@@ -1,41 +1,34 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { compareDesc, format, parseISO } from 'date-fns';
-import { allPosts, Post } from 'contentlayer/generated';
+import { allDocs, Doc } from 'contentlayer/generated';
 
 export async function getStaticProps() {
-  const posts = allPosts.sort((a, b) => {
-    return compareDesc(new Date(a.date), new Date(b.date));
-  });
-  return { props: { posts } };
+  return { props: { docs: allDocs } };
 }
 
-function PostCard(post: Post) {
+function DocCard(doc: Doc) {
   return (
     <div>
-      <time dateTime={post.date}>
-        {format(parseISO(post.date), 'LLLL d, yyyy')}
-      </time>
       <h2>
-        <Link href={post.url}>
-          <a>{post.title}</a>
+        <Link href={doc.url}>
+          <a>{doc.title}</a>
         </Link>
       </h2>
     </div>
   );
 }
 
-export default function Home({ posts }: { posts: Post[] }) {
+export default function Home({ docs }: { docs: Doc[] }) {
   return (
     <div>
       <Head>
-        <title>Contentlayer Blog Example</title>
+        <title>Contentlayer Spike</title>
       </Head>
 
-      <h1>Contentlayer Blog Example</h1>
+      <h1>Contentlayer Spike</h1>
 
-      {posts.map((post, idx) => (
-        <PostCard key={idx} {...post} />
+      {docs.map((doc, idx) => (
+        <DocCard key={idx} {...doc} />
       ))}
     </div>
   );
