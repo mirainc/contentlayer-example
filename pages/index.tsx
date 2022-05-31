@@ -1,9 +1,12 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { allDocs, Doc } from 'contentlayer/generated';
+import { buildDocsTree } from 'utils/buildDocsTree';
+import { InferGetStaticPropsType } from 'next';
 
 export async function getStaticProps() {
-  return { props: { docs: allDocs } };
+  const tree = buildDocsTree(allDocs);
+  return { props: { docs: allDocs, tree } };
 }
 
 function DocCard(doc: Doc) {
@@ -18,7 +21,10 @@ function DocCard(doc: Doc) {
   );
 }
 
-export default function Home({ docs }: { docs: Doc[] }) {
+export default function Home({
+  docs,
+  tree,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div>
       <Head>
