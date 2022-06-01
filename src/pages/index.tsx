@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { allDocs, Doc } from 'contentlayer/generated';
-import { buildDocsTree } from 'utils/buildDocsTree';
+import { buildDocsTree } from 'src/utils/buildDocsTree';
 import { InferGetStaticPropsType } from 'next';
 
 export async function getStaticProps() {

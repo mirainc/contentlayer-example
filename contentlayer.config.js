@@ -1,5 +1,5 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
-import { urlFromFilePath, contentDirPath } from './contentlayer/utils';
+import { urlFromFilePath, contentDirPath } from './src/contentlayer/utils';
 
 export const Doc = defineDocumentType(() => ({
   name: 'Doc',

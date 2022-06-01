@@ -1,10 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { GetStaticProps } from 'next';
 import { allDocs, Doc } from 'contentlayer/generated';
-import { buildDocsTree } from 'utils/buildDocsTree';
+import { buildDocsTree } from 'src/utils/buildDocsTree';
 import { PathSegment } from 'types/PathSegment';
-import { defineStaticProps, toParams } from 'utils/next';
+import { defineStaticProps, toParams } from 'src/utils/next';
+import { DocsNavigation } from 'src/components/DocsNavigation';
+import { InferGetStaticPropsType } from 'next';
 
 export async function getStaticPaths() {
   const test = allDocs.map((_) => _.pathSegments);
@@ -42,25 +43,24 @@ export const getStaticProps = defineStaticProps(async (context) => {
 
   return { props: { doc, tree, childrenTree } };
 });
-const DocLayout = (props: { doc: Doc }) => {
-  const { doc } = props;
+const DocLayout = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { doc, tree } = props;
   return (
     <>
       <Head>
         <title>{doc.title}</title>
       </Head>
-      <aside>Nav here</aside>
-      <article>
-        <div>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-        </div>
-        <div>
-          <h1>{doc.title}</h1>
-        </div>
-        <div dangerouslySetInnerHTML={{ __html: doc.body.html }} />
-      </article>
+      <div className="relative mx-auto w-full max-w-screen-2xl lg:flex lg:items-start">
+        <DocsNavigation tree={tree} />
+        <article>
+          <div>
+            <h1 className="sr-only text-2xl font-semibold text-slate-800 dark:text-slate-200 md:text-3xl lg:not-sr-only lg:text-4xl">
+              {doc.title}
+            </h1>
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: doc.body.html }} />
+        </article>
+      </div>
     </>
   );
 };
