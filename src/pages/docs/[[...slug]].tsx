@@ -28,12 +28,18 @@ export const getStaticProps = defineStaticProps(async (context) => {
   )!;
   let slugs = params.slug ? ['', ...params.slug] : [];
   let path = '';
+  let breadcrumbs: any = [];
   for (const slug of slugs) {
     path += path == '' ? slug : '/' + slug;
+    const navTitle = allDocs.find(
+      (_) =>
+        _.pathSegments.map((_: PathSegment) => _.pathName).join('/') === path,
+    )?.nav_title;
     const title = allDocs.find(
       (_) =>
         _.pathSegments.map((_: PathSegment) => _.pathName).join('/') === path,
     )?.title;
+    breadcrumbs.push({ path: '/docs/' + path, slug, title: navTitle || title });
   }
   const tree = buildDocsTree(allDocs);
   const childrenTree = buildDocsTree(
@@ -43,6 +49,7 @@ export const getStaticProps = defineStaticProps(async (context) => {
 
   return { props: { doc, tree, childrenTree } };
 });
+
 const DocLayout = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { doc, tree } = props;
   return (
@@ -58,7 +65,10 @@ const DocLayout = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
               {doc.title}
             </h1>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: doc.body.html }} />
+          <div
+            className="prose"
+            dangerouslySetInnerHTML={{ __html: doc.body.html }}
+          />
         </article>
       </div>
     </>

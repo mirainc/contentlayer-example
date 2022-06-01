@@ -13,19 +13,8 @@ const NavLink: FC<{
   url: string;
   level: number;
   activePath: string;
-  collapsible: boolean;
-  collapsed: boolean;
   toggleCollapsed: () => void;
-}> = ({
-  title,
-  label,
-  url,
-  level,
-  activePath,
-  collapsible,
-  collapsed,
-  toggleCollapsed,
-}) => {
+}> = ({ title, label, url, level, activePath, toggleCollapsed }) => {
   return (
     <div
       className={classNames(
@@ -47,19 +36,6 @@ const NavLink: FC<{
           {label && <Label text={label} />}
         </a>
       </Link>
-      {collapsible && (
-        <button
-          aria-label="Toggle children"
-          onClick={toggleCollapsed}
-          className="mr-2 shrink-0 px-2 py-1"
-        >
-          <span
-            className={`block w-2.5 ${collapsed ? '-rotate-90 transform' : ''}`}
-          >
-            <Icon name="chevron-down" />
-          </span>
-        </button>
-      )}
     </div>
   );
 };
@@ -85,12 +61,9 @@ const Node: FC<{ node: TreeNode; level: number; activePath: string }> = ({
     <>
       <NavLink
         title={node.nav_title || node.title}
-        label={node.label || undefined}
         url={node.urlPath}
         level={level}
         activePath={activePath}
-        collapsible={node.collapsible ?? false}
-        collapsed={collapsed}
         toggleCollapsed={toggleCollapsed}
       />
       {node.children.length > 0 && !collapsed && (

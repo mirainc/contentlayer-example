@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import highlight from 'rehype-highlight';
 import { urlFromFilePath, contentDirPath } from './src/contentlayer/utils';
 
 export const Doc = defineDocumentType(() => ({
@@ -9,6 +10,10 @@ export const Doc = defineDocumentType(() => ({
       type: 'string',
       description: 'The title of the doc',
       required: true,
+    },
+    nav_title: {
+      type: 'string',
+      description: 'Override the title for display in nav',
     },
   },
   computedFields: {
@@ -42,4 +47,5 @@ export const Doc = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath,
   documentTypes: [Doc],
+  mdx: { rehypePlugins: [highlight] },
 });
