@@ -9,18 +9,6 @@ export async function getStaticProps() {
   return { props: { docs: allDocs, tree } };
 }
 
-function DocCard(doc: Doc) {
-  return (
-    <div>
-      <h2>
-        <Link href={doc.url}>
-          <a>{doc.title}</a>
-        </Link>
-      </h2>
-    </div>
-  );
-}
-
 export default function Home({
   docs,
   tree,
@@ -32,10 +20,6 @@ export default function Home({
       </Head>
 
       <h1>Contentlayer Spike</h1>
-
-      {docs.map((doc, idx) => (
-        <DocCard key={idx} {...doc} />
-      ))}
     </div>
   );
 }

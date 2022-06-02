@@ -45,7 +45,7 @@ const Node: FC<{ node: TreeNode; level: number; activePath: string }> = ({
   level,
   activePath,
 }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(node.collapsed ?? false);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   useEffect(() => {

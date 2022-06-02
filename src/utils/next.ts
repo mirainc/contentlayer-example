@@ -21,6 +21,7 @@ export const buildDocsTree = (
     .sort((a, b) => a.pathSegments[level].order - b.pathSegments[level].order)
     .map<TreeNode>((doc) => ({
       title: doc.title,
+      nav_title: doc.nav_title || '',
       urlPath:
         '/docs/' +
         doc.pathSegments.map((_: PathSegment) => _.pathName).join('/'),
